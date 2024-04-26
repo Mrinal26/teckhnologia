@@ -5,10 +5,94 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Details Management</title>
   <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f2f5;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-top: 30px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    form {
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    input[type="text"], input[type="file"], button {
+      margin-top: 10px;
+      padding: 10px;
+      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      background-color: #007bff;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .details-item {
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      padding: 15px;
+      transition: transform 0.3s ease;
+    }
+
+    .details-item:hover {
+      transform: translateY(-5px);
+    }
+
+    .details-item p {
+      margin: 0;
+      padding: 5px 0;
+    }
+
+    .delete-btn {
+      background-color: #dc3545;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .delete-btn:hover {
+      background-color: #c82333;
+    }
   </style>
 </head>
 <body>
-  <h1>Details Management</h1>
+  <div class="container">
+    <h1>Details Management</h1>
   <form id="addDetailForm">
     <label for="name">Name:</label>
     <input type="text" id="name" name="name" required>
@@ -18,25 +102,33 @@
   </form>
 
   <div id="detailsList"></div>
+  </div>
+  
 
   <script>
     async function fetchDetails() {
-      const response = await fetch('http://localhost:3000/details');
-      const details = await response.json();
+  try {
+    const response = await fetch('http://localhost:3000/details');
+    const data = await response.json();
 
-      const detailsList = document.getElementById('detailsList');
-      detailsList.innerHTML = '';
+    const details = data.rows;
 
-      details.forEach(detail => {
-        const detailDiv = document.createElement('div');
-        detailDiv.innerHTML = `
-          <p>Name: ${detail.name}</p>
-          <p>Resume Path: ${detail.resumePath}</p>
-          <button onclick="deleteDetail(${detail.id})">Delete</button>
-        `;
-        detailsList.appendChild(detailDiv);
-      });
-    }
+    const detailsList = document.getElementById('detailsList');
+    detailsList.innerHTML = '';
+
+    details.forEach(detail => {
+      const detailDiv = document.createElement('div');
+      detailDiv.innerHTML = `
+        <p>Name: ${detail.name}</p>
+        <p>Resume Path: ${detail.resumePath}</p>
+        <button onclick="deleteDetail(${detail.id})">Delete</button>
+      `;
+      detailsList.appendChild(detailDiv);
+    });
+  } catch (error) {
+    console.error('Error fetching details:', error);
+  }
+}
     async function addDetail(event) {
       event.preventDefault();
 
