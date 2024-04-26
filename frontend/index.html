@@ -21,7 +21,7 @@
 
   <script>
     async function fetchDetails() {
-      const response = await fetch('/details');
+      const response = await fetch('http://localhost:3000/details');
       const details = await response.json();
 
       const detailsList = document.getElementById('detailsList');
@@ -43,7 +43,7 @@
       const form = document.getElementById('addDetailForm');
       const formData = new FormData(form);
 
-      await fetch('/details', {
+      await fetch('http://localhost:3000/details', {
         method: 'POST',
         body: formData,
       });
@@ -54,7 +54,7 @@
 
     async function deleteDetail(id) {
       if (confirm('Are you sure you want to delete this detail?')) {
-        await fetch(`/details/${id}`, {
+        await fetch(`http://localhost:3000/details/${id}`, {
           method: 'DELETE',
         });
         fetchDetails();

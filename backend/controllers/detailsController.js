@@ -1,14 +1,18 @@
-const Details = require('./db/models/details');
+const Details = require('../db/models/details');
 
 exports.createDetail = async (req, res) => {
   try {
-    const { name, resumePath } = req.body;
+    const { name} = req.body;
+    const resumePath= req.file? req.file.path: null;
+    console.log(resumePath);
     const newDetail = await Details.create({ name, resumePath });
     res.json({ message: 'Detail created successfully', detail: newDetail });
+
   } catch (err) {
     console.error('Error creating detail:', err);
     res.status(500).json({ error: 'Error creating detail' });
   }
+
 };
 
 exports.getDetails = async (req, res) => {
